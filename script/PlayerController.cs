@@ -79,7 +79,7 @@ public class PlayerController : MonoBehaviour
                     }
                     if(isRightTouch == true)
                     {
-
+                        cameraController.UpdateRightTouch(touch);
                     }
                 }
             }
@@ -90,7 +90,7 @@ public class PlayerController : MonoBehaviour
         horizontalKeyInput = Input.GetAxis("Horizontal");
         vertivalKeyInput = Input.GetAxis("vertical");
 
-        bool isKeyInput = (horizontalKeyInput != 0 || verticalKeyInput != 0);
+        bool isKeyInput = (horizontalKeyInput != 0 || verticalKeyInput != 0 leftTouchInput != Vector2.zero);
         if (isKeyInput == true && isAttack == false) {
             bool currentIsRun = animator.GetBool("isRun");
             if (currentIsRun == false) {
@@ -113,6 +113,8 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        CameraController.FixedUpdateCameraPostion(this.transorm);
+
         if(isAttack == false)
         {
             Vector3 input = new Vector3();
