@@ -17,6 +17,16 @@ public class PlayerController : MonoBehaviour
     bool isAttack = false;
 
     bool isGround = false;
+    
+    float horizontalKeyInput = 0;
+
+    float verticalKeyInput = 0;
+
+    bool isTouch = false;
+
+    Vector2 leftStartTouch = new Vector2();
+
+    vector2 leftTouchInput = new vevtor2();
 
     void Start()
     {
@@ -29,6 +39,102 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
+        if(Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+        {
+            if (Input.touchCount > 0)
+            {
+                isTouch == true;
+                Touch[] touches = Input.touches;
+                foreach(var touch in touches)
+                {
+                    bool isLeftTouch = false;
+                    bool isRightTouch = false;
+                    if(touch.position.x > 0 && touch.position.x < Screen.width / 2)
+                    {
+                        isLeftTouch = true;
+                    }
+                    else if(touch.position.x > Screen.width / 2 && touch.position.x < Screen.width)
+                    {
+                        isRightTouch = true;
+                    }
+
+                    if(isLeftTouch == true)
+                    {
+                        if(touch.phase == touchphase.Began)
+                        {
+                            Debug.log("Left Touch Began");
+                            leftStartTouch = touch.position;
+                        }
+                        else if(touch.phase == touchPhase.Moved || touch.phase == touchPhase.Stationary)
+                        {
+                            Debug.log("Left Touch Moved");
+                            Vector2 position = touch.position;
+                            leftTouchInput = position - leftStartTouch;
+                        }
+                        else if(touch.phase == touchPhase.Ended)
+                        {
+                            Debug.log("Left Touch Ended");
+                            leftTouchInput = Vector2.zero;
+                        }
+                    }
+                    if(isRightTouch == true)
+                    {
+
+                    }
+                }
+            }
+            else
+            {
+                isTouch = false;
+            }
+        horizontalKeyInput = Input.GetAxis("Horizontal");
+        vertivalKeyInput = Input.GetAxis("vertical");
+
+        bool isKeyInput = (horizontalKeyInput != 0 || verticalKeyInput != 0);
+        if (isKeyInput == true && isAttack == false) {
+            bool currentIsRun = animator.GetBool("isRun");
+            if (currentIsRun == false) {
+                animator.SetBool("isRun", true);
+            }
+            vevtor3 dir = rigid.velocity.normalized;
+            dir.y = 0;
+            this.transform.forward = dir;
+            else
+            {
+                bool currentIsRun = animator.GetBool("isRun");
+                if (currentIsRun == true) {
+                    animator.SetBool("isRun", false);
+                }
+            }
+        }
+
+        Debug.log(horizontalKeyInput + "." + verticalKeyInput);
+    }
+
+    void FixedUpdate()
+    {
+        if(isAttack == false)
+        {
+            Vector3 input = new Vector3();
+            vector3 move = new Vector3();
+            if(Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
+            {
+                input = new Vector3(leftTouchInput.x, 0, leftTouchInput.y);
+                move = input.normalized * 2f;
+            }
+            else
+            {
+                input = new Vector3(horizontalKeyInput, 0, verticalKeyInput);
+                move = input.normalized * 2f;
+            }
+
+            Vector3 cameraMove = Camara.main.gameObject.transform.rotation * move;
+            cameraMove.y = 0;
+            Vector3 currentRigidVelocity = rigid.velocity;
+            currentRiggidVelocity.y = 0;
+
+            rigid.AddForce(cameraMove - currentRigidVelocity, ForceMode.VelocityChange);
+        }
     }
 
     public void OnAttackButtonClicked() {
