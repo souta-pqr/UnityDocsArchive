@@ -4,25 +4,24 @@ using UnityEngine;
 
 public class PlayerCameraController : MonoBehaviour
 {
-    // ‰ñ“]‘€ì—pƒgƒ‰ƒ“ƒXƒtƒH[ƒ€.
     [SerializeField] Transform rotationRoot = null;
-    // ‚‚³‘€ì—pƒgƒ‰ƒ“ƒXƒtƒH[ƒ€.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½tï¿½Hï¿½[ï¿½ï¿½.
     [SerializeField] Transform heightRoot = null;
-    // ƒvƒŒƒCƒ„[ƒJƒƒ‰.
+    // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Jï¿½ï¿½ï¿½ï¿½.
     [SerializeField] Camera mainCamera = null;
 
-    // ƒJƒƒ‰‚ªŽÊ‚·’†S‚ÌƒvƒŒƒCƒ„[‚©‚ç‚‚³.
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê‚ï¿½ï¿½ï¿½ï¿½Sï¿½Ìƒvï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½ç‚ï¿½ï¿½.
     [SerializeField] float lookHeight = 1.0f;
-    // ƒJƒƒ‰‰ñ“]ƒXƒs[ƒh.
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½]ï¿½Xï¿½sï¿½[ï¿½h.
     [SerializeField] float rotationSpeed = 0.01f;
-    // ƒJƒƒ‰‚‚³•Ï‰»ƒXƒs[ƒh.
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï‰ï¿½ï¿½Xï¿½sï¿½[ï¿½h.
     [SerializeField] float heightSpeed = 0.001f;
-    // ƒJƒƒ‰ˆÚ“®§ŒÀMinMax.
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Ú“ï¿½ï¿½ï¿½ï¿½ï¿½MinMax.
     [SerializeField] Vector2 heightLimit_MinMax = new Vector2(-1f, 3f);
 
-    // ƒ^ƒbƒ`ƒXƒ^[ƒgˆÊ’u.
+    // ï¿½^ï¿½bï¿½`ï¿½Xï¿½^ï¿½[ï¿½gï¿½Ê’u.
     Vector2 cameraStartTouch = Vector2.zero;
-    // Œ»Ý‚Ìƒ^ƒbƒ`ˆÊ’u.
+    // ï¿½ï¿½ï¿½Ý‚Ìƒ^ï¿½bï¿½`ï¿½Ê’u.
     Vector2 cameraTouchInput = Vector2.zero;
 
     // Start is called before the first frame update
@@ -39,7 +38,7 @@ public class PlayerCameraController : MonoBehaviour
 
     public void UpdateCameraLook(Transform player)
     {
-        // ƒJƒƒ‰‚ðƒLƒƒƒ‰‚Ì­‚µã‚ÉŒÅ’è.
+        // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½ÉŒÅ’ï¿½.
         var cameraMarker = player.position;
         cameraMarker.y += lookHeight;
         var _camLook = (cameraMarker - mainCamera.transform.position).normalized;
@@ -53,38 +52,38 @@ public class PlayerCameraController : MonoBehaviour
 
     public void UpdateRightTouch(Touch touch)
     {
-        // ƒ^ƒbƒ`ŠJŽn.
+        // ï¿½^ï¿½bï¿½`ï¿½Jï¿½n.
         if (touch.phase == TouchPhase.Began)
         {
-            Debug.Log("‰Eƒ^ƒbƒ`ŠJŽn");
-            // ŠJŽnˆÊ’u‚ð•ÛŠÇ.
+            Debug.Log("ï¿½Eï¿½^ï¿½bï¿½`ï¿½Jï¿½n");
+            // ï¿½Jï¿½nï¿½Ê’uï¿½ï¿½ÛŠï¿½.
             cameraStartTouch = touch.position;
         }
-        // ƒ^ƒbƒ`’†.
+        // ï¿½^ï¿½bï¿½`ï¿½ï¿½.
         else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
         {
-            Debug.Log("‰Eƒ^ƒbƒ`’†");
-            // Œ»Ý‚ÌˆÊ’u‚ðŽž•ÛŠÇ.
+            Debug.Log("ï¿½Eï¿½^ï¿½bï¿½`ï¿½ï¿½");
+            // ï¿½ï¿½ï¿½Ý‚ÌˆÊ’uï¿½ðŽï¿½ï¿½ÛŠï¿½.
             Vector2 position = touch.position;
-            // ŠJŽnˆÊ’u‚©‚ç‚ÌˆÚ“®ƒxƒNƒgƒ‹‚ðŽZo.
+            // ï¿½Jï¿½nï¿½Ê’uï¿½ï¿½ï¿½ï¿½ÌˆÚ“ï¿½ï¿½xï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Zï¿½o.
             cameraTouchInput = position - cameraStartTouch;
-            // ƒJƒƒ‰‰ñ“].
+            // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½].
             var yRot = new Vector3(0, cameraTouchInput.x * rotationSpeed, 0);
             var rResult = rotationRoot.rotation.eulerAngles + yRot;
             var qua = Quaternion.Euler(rResult);
             rotationRoot.rotation = qua;
 
-            // ƒJƒƒ‰‚’á.
+            // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
             var yHeight = new Vector3(0, -cameraTouchInput.y * heightSpeed, 0);
             var hResult = heightRoot.transform.localPosition + yHeight;
             if (hResult.y > heightLimit_MinMax.y) hResult.y = heightLimit_MinMax.y;
             else if (hResult.y <= heightLimit_MinMax.x) hResult.y = heightLimit_MinMax.x;
             heightRoot.localPosition = hResult;
         }
-        // ƒ^ƒbƒ`I—¹.
+        // ï¿½^ï¿½bï¿½`ï¿½Iï¿½ï¿½.
         else if (touch.phase == TouchPhase.Ended)
         {
-            Debug.Log("‰Eƒ^ƒbƒ`I—¹");
+            Debug.Log("ï¿½Eï¿½^ï¿½bï¿½`ï¿½Iï¿½ï¿½");
             cameraTouchInput = Vector2.zero;
         }
     }

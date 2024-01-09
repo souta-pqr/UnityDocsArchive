@@ -8,100 +8,100 @@ public class PlayerController : MonoBehaviour
 {
     // -------------------------------------------------------
     /// <summary>
-    /// ƒXƒe[ƒ^ƒX.
+    /// ï¿½Xï¿½eï¿½[ï¿½^ï¿½X.
     /// </summary>
     // -------------------------------------------------------
     [System.Serializable]
     public class Status
     {
-        // ‘Ì—Í.
+        // ï¿½Ì—ï¿½.
         public int Hp = 10;
-        // UŒ‚—Í.
+        // ï¿½Uï¿½ï¿½ï¿½ï¿½.
         public int Power = 1;
     }
 
-    // UŒ‚HitƒIƒuƒWƒFƒNƒg‚ÌColliderCall.
+    // ï¿½Uï¿½ï¿½Hitï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ColliderCall.
     [SerializeField] ColliderCallReceiver attackHitCall = null;
-    // Šî–{ƒXƒe[ƒ^ƒX.
+    // ï¿½ï¿½{ï¿½Xï¿½eï¿½[ï¿½^ï¿½X.
     [SerializeField] Status DefaultStatus = new Status();
-    // Œ»İ‚ÌƒXƒe[ƒ^ƒX.
+    // ï¿½ï¿½ï¿½İ‚ÌƒXï¿½eï¿½[ï¿½^ï¿½X.
     public Status CurrentStatus = new Status();
 
-    // UŒ‚”»’è—pƒIƒuƒWƒFƒNƒg.
+    // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½g.
     [SerializeField] GameObject attackHit = null;
-    // İ’u”»’è—pColliderCall.
+    // ï¿½İ’uï¿½ï¿½ï¿½ï¿½pColliderCall.
     [SerializeField] ColliderCallReceiver footColliderCall = null;
-    // ƒ^ƒbƒ`ƒ}[ƒJ[.
+    // ï¿½^ï¿½bï¿½`ï¿½}ï¿½[ï¿½Jï¿½[.
     [SerializeField] GameObject touchMarker = null;
-    // ƒWƒƒƒ“ƒv—Í.
+    // ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½.
     [SerializeField] float jumpPower = 20f;
 
-    // ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[.
+    // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½gï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½[.
     [SerializeField] PlayerCameraController cameraController = null;
 
-    // ©g‚ÌƒRƒ‰ƒCƒ_[.
+    // ï¿½ï¿½ï¿½gï¿½ÌƒRï¿½ï¿½ï¿½Cï¿½_ï¿½[.
     [SerializeField] Collider myCollider = null;
-    // UŒ‚‚ğH‚ç‚Á‚½‚Æ‚«‚Ìƒp[ƒeƒBƒNƒ‹ƒvƒŒƒnƒu.
+    // ï¿½Uï¿½ï¿½ï¿½ï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ìƒpï¿½[ï¿½eï¿½Bï¿½Nï¿½ï¿½ï¿½vï¿½ï¿½ï¿½nï¿½u.
     [SerializeField] GameObject hitParticlePrefab = null;
-    // ƒp[ƒeƒBƒNƒ‹ƒIƒuƒWƒFƒNƒg•ÛŠÇ—pƒŠƒXƒg.
+    // ï¿½pï¿½[ï¿½eï¿½Bï¿½Nï¿½ï¿½ï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ÛŠÇ—pï¿½ï¿½ï¿½Xï¿½g.
     List<GameObject> particleObjectList = new List<GameObject>();
 
-    //! HPƒo[‚ÌƒXƒ‰ƒCƒ_[.
+    //! HPï¿½oï¿½[ï¿½ÌƒXï¿½ï¿½ï¿½Cï¿½_ï¿½[.
     [SerializeField] Slider hpBar = null;
 
-    //! ƒQ[ƒ€ƒI[ƒo[ƒCƒxƒ“ƒg.
+    //! ï¿½Qï¿½[ï¿½ï¿½ï¿½Iï¿½[ï¿½oï¿½[ï¿½ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½g.
     public UnityEvent GameOverEvent = new UnityEvent();
-    // ŠJnˆÊ’u.
+    // ï¿½Jï¿½nï¿½ï¿½ï¿½Ê’u.
     Vector3 startPosition = new Vector3();
-    // ŠJnŠp“x.
+    // ï¿½Jï¿½nï¿½ï¿½ï¿½pï¿½x.
     Quaternion startRotation = new Quaternion();
 
-    // ƒAƒjƒ[ƒ^[.
+    // ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½^ï¿½[.
     Animator animator = null;
-    // ƒŠƒWƒbƒhƒ{ƒfƒB.
+    // ï¿½ï¿½ï¿½Wï¿½bï¿½hï¿½{ï¿½fï¿½B.
     Rigidbody rigid = null;
-    //! UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“’†ƒtƒ‰ƒO.
+    //! ï¿½Uï¿½ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½tï¿½ï¿½ï¿½O.
     bool isAttack = false;
-    // Ú’nƒtƒ‰ƒO.
+    // ï¿½Ú’nï¿½tï¿½ï¿½ï¿½O.
     bool isGround = false;
 
-    // PCƒL[‰¡•ûŒü“ü—Í.
+    // PCï¿½Lï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
     float horizontalKeyInput = 0;
-    // PCƒL[c•ûŒü“ü—Í.
+    // PCï¿½Lï¿½[ï¿½cï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
     float verticalKeyInput = 0;
 
     bool isTouch = false;
 
-    // ¶”¼•ªƒ^ƒbƒ`ƒXƒ^[ƒgˆÊ’u.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½bï¿½`ï¿½Xï¿½^ï¿½[ï¿½gï¿½Ê’u.
     Vector2 leftStartTouch = new Vector2();
-    // ¶”¼•ªƒ^ƒbƒ`“ü—Í.
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½ï¿½.
     Vector2 leftTouchInput = new Vector2();
 
     // Start is called before the first frame update
     void Start()
     {
-        // Animator‚ğæ“¾‚µ•ÛŠÇ.
+        // Animatorï¿½ï¿½ï¿½æ“¾ï¿½ï¿½ï¿½ÛŠï¿½.
         animator = GetComponent<Animator>();
-        // Rigidbody‚Ìæ“¾.
+        // Rigidbodyï¿½Ìæ“¾.
         rigid = GetComponent<Rigidbody>();
-        // UŒ‚”»’è—pƒIƒuƒWƒFƒNƒg‚ğ”ñ•\¦‚É.
+        // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½.
         attackHit.SetActive(false);
 
-        // FootSphere‚ÌƒCƒxƒ“ƒg“o˜^.
+        // FootSphereï¿½ÌƒCï¿½xï¿½ï¿½ï¿½gï¿½oï¿½^.
         footColliderCall.TriggerStayEvent.AddListener(OnFootTriggerStay);
         footColliderCall.TriggerExitEvent.AddListener(OnFootTriggerExit);
 
-        // UŒ‚”»’è—pƒRƒ‰ƒCƒ_[ƒCƒxƒ“ƒg“o˜^.
+        // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½oï¿½^.
         attackHitCall.TriggerEnterEvent.AddListener(OnAttackHitTriggerEnter);
-        // Œ»İ‚ÌƒXƒe[ƒ^ƒX‚Ì‰Šú‰».
+        // ï¿½ï¿½ï¿½İ‚ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½.
         CurrentStatus.Hp = DefaultStatus.Hp;
         CurrentStatus.Power = DefaultStatus.Power;
 
-        // ŠJn‚ÌˆÊ’u‰ñ“]‚ğ•ÛŠÇ.
+        // ï¿½Jï¿½nï¿½ï¿½ï¿½ÌˆÊ’uï¿½ï¿½]ï¿½ï¿½ÛŠï¿½.
         startPosition = this.transform.position;
         startRotation = this.transform.rotation;
 
-        // ƒXƒ‰ƒCƒ_[‚ğ‰Šú‰».
+        // ï¿½Xï¿½ï¿½ï¿½Cï¿½_ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
         hpBar.maxValue = DefaultStatus.Hp;
         hpBar.value = CurrentStatus.Hp;
     }
@@ -109,72 +109,74 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // ƒJƒƒ‰‚ğƒvƒŒƒCƒ„[‚ÉŒü‚¯‚é. 
+        // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÉŒï¿½ï¿½ï¿½ï¿½ï¿½. 
         cameraController.UpdateCameraLook(this.transform);
 
         if (Application.platform == RuntimePlatform.Android || Application.platform == RuntimePlatform.IPhonePlayer)
         {
-            // ƒXƒ}ƒzƒ^ƒbƒ`‘€ì.
-            // ƒ^ƒbƒ`‚µ‚Ä‚¢‚éw‚Ì”‚ª‚O‚æ‚è‘½‚¢.
+            // ï¿½Xï¿½}ï¿½zï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½ï¿½.
+            // ï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½wï¿½Ìï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½è‘½ï¿½ï¿½.
             if(Input.touchCount > 0)
             {
                 isTouch = true;
-                // ƒ^ƒbƒ`î•ñ‚ğ‚·‚×‚Äæ“¾.
+                // ï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×‚Äæ“¾.
                 Touch[] touches = Input.touches;
-                // ‘S•”‚Ìƒ^ƒbƒ`‚ğŒJ‚è•Ô‚µ‚Ä”»’è.
+                // ï¿½Sï¿½ï¿½ï¿½Ìƒ^ï¿½bï¿½`ï¿½ï¿½ï¿½Jï¿½ï¿½Ô‚ï¿½ï¿½Ä”ï¿½ï¿½ï¿½.
                 foreach (var touch in touches)
                 {
                     bool isLeftTouch = false;
                     bool isRightTouch = false;
-                    // ƒ^ƒbƒ`ˆÊ’u‚ÌX²•ûŒü‚ªƒXƒNƒŠ[ƒ“‚Ì¶‘¤.
+                    // ï¿½^ï¿½bï¿½`ï¿½Ê’uï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ìï¿½ï¿½ï¿½.
                     if(touch.position.x > 0 && touch.position.x < Screen.width / 2)
                     {
                         isLeftTouch = true;
 
                     }
-                    // ƒ^ƒbƒ`ˆÊ’u‚ÌX²•ûŒü‚ªƒXƒNƒŠ[ƒ“‚Ì‰E‘¤.
+                    // ï¿½^ï¿½bï¿½`ï¿½Ê’uï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Xï¿½Nï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Ì‰Eï¿½ï¿½.
                     else if (touch.position.x > Screen.width / 2 && touch.position.x < Screen.width)
                     {
                         isRightTouch = true; ;
                     }
 
-                    // ¶ƒ^ƒbƒ`.
+                    // ï¿½ï¿½ï¿½^ï¿½bï¿½`.
                     if (isLeftTouch == true)
                     {
-                        // ¶”¼•ª‚ğƒ^ƒbƒ`‚µ‚½Û‚Ìˆ—.
-                        // ƒ^ƒbƒ`ŠJn.
+                        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½Û‚Ìï¿½ï¿½ï¿½.
+                        // ï¿½^ï¿½bï¿½`ï¿½Jï¿½n.
                         if (touch.phase == TouchPhase.Began)
                         {
-                            // ŠJnˆÊ’u‚ğ•ÛŠÇ.
+                            Debug.log("ã‚¿ãƒƒãƒé–‹å§‹");
+                            // ï¿½Jï¿½nï¿½Ê’uï¿½ï¿½ÛŠï¿½.
                             leftStartTouch = touch.position;
-                            // ŠJnˆÊ’u‚Éƒ}[ƒJ[‚ğ•\¦.
+                            // ï¿½Jï¿½nï¿½Ê’uï¿½Éƒ}ï¿½[ï¿½Jï¿½[ï¿½ï¿½\ï¿½ï¿½.
                             touchMarker.SetActive(true);
                             Vector3 touchPosition = touch.position;
                             touchPosition.z = 1f;
                             Vector3 markerPosition = Camera.main.ScreenToWorldPoint(touchPosition);
                             touchMarker.transform.position = markerPosition;
                         }
-                        // ƒ^ƒbƒ`’†.
+                        // ï¿½^ï¿½bï¿½`ï¿½ï¿½.
                         else if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
                         {
-                            // Œ»İ‚ÌˆÊ’u‚ğ•ÛŠÇ.
+                            Debug.log("ã‚¿ãƒƒãƒä¸­");
+                            // ï¿½ï¿½ï¿½İ‚ÌˆÊ’uï¿½ğï¿½ï¿½
                             Vector2 position = touch.position;
-                            // ˆÚ“®—p‚Ì•ûŒü‚ğ•ÛŠÇ.
+                            // ï¿½Ú“ï¿½ï¿½pï¿½Ì•ï¿½ï¿½ï¿½ï¿½ï¿½ÛŠï¿½.
                             leftTouchInput = position - leftStartTouch;
                         }
-                        // ƒ^ƒbƒ`I—¹.
+                        // ï¿½^ï¿½bï¿½`ï¿½Iï¿½ï¿½.
                         else if (touch.phase == TouchPhase.Ended)
                         {
                             leftTouchInput = Vector2.zero;
-                            // ƒ}[ƒJ[‚ğ”ñ•\¦.
+                            // ï¿½}ï¿½[ï¿½Jï¿½[ï¿½ï¿½ï¿½\ï¿½ï¿½.
                             touchMarker.gameObject.SetActive(false);
                         }
                     }
 
-                    // ‰Eƒ^ƒbƒ`.
+                    // ï¿½Eï¿½^ï¿½bï¿½`.
                     if (isRightTouch == true)
                     {
-                        // ‰E”¼•ª‚ğƒ^ƒbƒ`‚µ‚½Û‚Ìˆ—.
+                        // ï¿½Eï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½^ï¿½bï¿½`ï¿½ï¿½ï¿½ï¿½ï¿½Û‚Ìï¿½ï¿½ï¿½.
                         cameraController.UpdateRightTouch(touch);
                     }
                 }
@@ -187,12 +189,12 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            // PCƒL[“ü—Íæ“¾.
+            // PCï¿½Lï¿½[ï¿½ï¿½ï¿½Íæ“¾.
             horizontalKeyInput = Input.GetAxis("Horizontal");
             verticalKeyInput = Input.GetAxis("Vertical");
         }
 
-        // ƒvƒŒƒCƒ„[‚ÌŒü‚«‚ğ’²®.
+        // ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½ÌŒï¿½ï¿½ï¿½ï¿½ğ’²ï¿½.
         bool isKeyInput = (horizontalKeyInput != 0 || verticalKeyInput != 0 || leftTouchInput != Vector2.zero);
         if (isKeyInput == true && isAttack == false)
         {
@@ -211,7 +213,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // ƒJƒƒ‰‚ÌˆÊ’u‚ğƒvƒŒƒCƒ„[‚É‡‚í‚¹‚é.
+        // ï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ÌˆÊ’uï¿½ï¿½ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[ï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½.
         cameraController.FixedUpdateCameraPosition(this.transform);
 
         if (isAttack == false)
@@ -239,14 +241,14 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// ‰ñ•œˆ—.
+    /// ï¿½ñ•œï¿½ï¿½ï¿½.
     /// </summary>
-    /// <param name="healPoint"> ‰ñ•œ—Ê. </param>
+    /// <param name="healPoint"> ï¿½ñ•œ—ï¿½. </param>
     // ---------------------------------------------------------------------
     public void OnHeal(int healPoint)
     {
         CurrentStatus.Hp += healPoint;
-        Debug.Log("HP‚ª" + healPoint + "‰ñ•œ!!");
+        Debug.Log("HPï¿½ï¿½" + healPoint + "ï¿½ï¿½!!");
 
         if (CurrentStatus.Hp > DefaultStatus.Hp) CurrentStatus.Hp = DefaultStatus.Hp;
 
@@ -255,65 +257,65 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// UŒ‚ƒ{ƒ^ƒ“ƒNƒŠƒbƒNƒR[ƒ‹ƒoƒbƒN.
+    /// ï¿½Uï¿½ï¿½ï¿½{ï¿½^ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Rï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½N.
     /// </summary>
     // ---------------------------------------------------------------------
     public void OnAttackButtonClicked()
     {
         if (isAttack == false)
         {
-            // Animation‚ÌisAttackƒgƒŠƒK[‚ğ‹N“®.
+            // Animationï¿½ï¿½isAttackï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½ï¿½ï¿½Nï¿½ï¿½.
             animator.SetTrigger("isAttack");
-            // UŒ‚ŠJn.
+            // ï¿½Uï¿½ï¿½ï¿½Jï¿½n.
             isAttack = true;
         }
     }
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“HitƒCƒxƒ“ƒgƒR[ƒ‹.
+    /// ï¿½Uï¿½ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½Hitï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½Rï¿½[ï¿½ï¿½.
     /// </summary>
     // ---------------------------------------------------------------------
     void Anim_AttackHit()
     {
         Debug.Log("Hit");
-        // UŒ‚”»’è—pƒIƒuƒWƒFƒNƒg‚ğ•\¦.
+        // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½\ï¿½ï¿½.
         attackHit.SetActive(true);
     }
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// UŒ‚ƒAƒjƒ[ƒVƒ‡ƒ“I—¹ƒCƒxƒ“ƒgƒR[ƒ‹.
+    /// ï¿½Uï¿½ï¿½ï¿½Aï¿½jï¿½ï¿½ï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½Rï¿½[ï¿½ï¿½.
     /// </summary>
     // ---------------------------------------------------------------------
     void Anim_AttackEnd()
     {
         Debug.Log("End");
-        // UŒ‚”»’è—pƒIƒuƒWƒFƒNƒg‚ğ”ñ•\¦‚É.
+        // ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½pï¿½Iï¿½uï¿½Wï¿½Fï¿½Nï¿½gï¿½ï¿½ï¿½\ï¿½ï¿½ï¿½ï¿½.
         attackHit.SetActive(false);
-        // UŒ‚I—¹.
+        // ï¿½Uï¿½ï¿½ï¿½Iï¿½ï¿½.
         isAttack = false;
     }
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// ƒWƒƒƒ“ƒvƒ{ƒ^ƒ“ƒNƒŠƒbƒNƒR[ƒ‹ƒoƒbƒN.
+    /// ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½vï¿½{ï¿½^ï¿½ï¿½ï¿½Nï¿½ï¿½ï¿½bï¿½Nï¿½Rï¿½[ï¿½ï¿½ï¿½oï¿½bï¿½N.
     /// </summary>
     // ---------------------------------------------------------------------
     public void OnJumpButtonClicked()
     {
         if (isGround == true)
         {
-            Debug.Log("ƒWƒƒƒ“ƒv");
+            Debug.Log("ï¿½Wï¿½ï¿½ï¿½ï¿½ï¿½v");
             rigid.AddForce(Vector3.up * jumpPower, ForceMode.Impulse);
         }
     }
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// FootSphereƒgƒŠƒK[ƒXƒeƒCƒR[ƒ‹.
+    /// FootSphereï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½Xï¿½eï¿½Cï¿½Rï¿½[ï¿½ï¿½.
     /// </summary>
-    /// <param name="col"> N“ü‚µ‚½ƒRƒ‰ƒCƒ_[. </param>
+    /// <param name="col"> ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[. </param>
     // ---------------------------------------------------------------------
     void OnFootTriggerStay(Collider col)
     {
@@ -326,9 +328,9 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// FootSphereƒgƒŠƒK[ƒCƒOƒWƒbƒgƒR[ƒ‹.
+    /// FootSphereï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½Cï¿½Oï¿½Wï¿½bï¿½gï¿½Rï¿½[ï¿½ï¿½.
     /// </summary>
-    /// <param name="col"> N“ü‚µ‚½ƒRƒ‰ƒCƒ_[. </param>
+    /// <param name="col"> ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[. </param>
     // ---------------------------------------------------------------------
     void OnFootTriggerExit(Collider col)
     {
@@ -341,9 +343,9 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// UŒ‚”»’èƒgƒŠƒK[ƒGƒ“ƒ^[ƒCƒxƒ“ƒgƒR[ƒ‹.
+    /// ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Kï¿½[ï¿½Gï¿½ï¿½ï¿½^ï¿½[ï¿½Cï¿½xï¿½ï¿½ï¿½gï¿½Rï¿½[ï¿½ï¿½.
     /// </summary>
-    /// <param name="col"> N“ü‚µ‚½ƒRƒ‰ƒCƒ_[. </param>
+    /// <param name="col"> ï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Rï¿½ï¿½ï¿½Cï¿½_ï¿½[. </param>
     // ---------------------------------------------------------------------
     void OnAttackHitTriggerEnter(Collider col)
     {
@@ -357,9 +359,9 @@ public class PlayerController : MonoBehaviour
 
 // ---------------------------------------------------------------------
     /// <summary>
-    /// “G‚ÌUŒ‚‚ªƒqƒbƒg‚µ‚½‚Æ‚«‚Ìˆ—.
+    /// ï¿½Gï¿½ÌUï¿½ï¿½ï¿½ï¿½ï¿½qï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Æ‚ï¿½ï¿½Ìï¿½ï¿½ï¿½.
     /// </summary>
-    /// <param name="damage"> H‚ç‚Á‚½ƒ_ƒ[ƒW. </param>
+    /// <param name="damage"> ï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½ï¿½ï¿½[ï¿½W. </param>
     // ---------------------------------------------------------------------
     public void OnEnemyAttackHit( int damage, Vector3 attackPosition )
     {
@@ -378,13 +380,13 @@ public class PlayerController : MonoBehaviour
         }
         else
         {
-            Debug.Log( damage + "‚Ìƒ_ƒ[ƒW‚ğH‚ç‚Á‚½!!c‚èHP" + CurrentStatus.Hp );
+            Debug.Log( damage + "ï¿½Ìƒ_ï¿½ï¿½ï¿½[ï¿½Wï¿½ï¿½Hï¿½ï¿½ï¿½ï¿½ï¿½!!ï¿½cï¿½ï¿½HP" + CurrentStatus.Hp );
         }
     }
  
-@@// ---------------------------------------------------------------------
+ï¿½@ï¿½@// ---------------------------------------------------------------------
     /// <summary>
-    /// ƒp[ƒeƒBƒNƒ‹‚ªI—¹‚µ‚½‚ç”jŠü‚·‚é.
+    /// ï¿½pï¿½[ï¿½eï¿½Bï¿½Nï¿½ï¿½ï¿½ï¿½ï¿½Iï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
     /// </summary>
     /// <param name="particle"></param>
     // ---------------------------------------------------------------------
@@ -397,12 +399,12 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// €–Sˆ—.
+    /// ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½.
     /// </summary>
     // ---------------------------------------------------------------------
     void OnDie()
     {
-        Debug.Log("€–S‚µ‚Ü‚µ‚½B");
+        Debug.Log("ï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Ü‚ï¿½ï¿½ï¿½ï¿½B");
         StopAllCoroutines();
         if (particleObjectList.Count > 0)
         {
@@ -414,21 +416,21 @@ public class PlayerController : MonoBehaviour
 
     // ---------------------------------------------------------------------
     /// <summary>
-    /// ƒŠƒgƒ‰ƒCˆ—.
+    /// ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½.
     /// </summary>
     // ---------------------------------------------------------------------
     public void Retry()
     {
-        // Œ»İ‚ÌƒXƒe[ƒ^ƒX‚Ì‰Šú‰».
+        // ï¿½ï¿½ï¿½İ‚ÌƒXï¿½eï¿½[ï¿½^ï¿½Xï¿½Ìï¿½ï¿½ï¿½ï¿½ï¿½.
         CurrentStatus.Hp = DefaultStatus.Hp;
         CurrentStatus.Power = DefaultStatus.Power;
         hpBar.value = CurrentStatus.Hp;
 
-        // ˆÊ’u‰ñ“]‚ğ‰ŠúˆÊ’u‚É–ß‚·.
+        // ï¿½Ê’uï¿½ï¿½]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê’uï¿½É–ß‚ï¿½.
         this.transform.position = startPosition;
         this.transform.rotation = startRotation;
 
-        //UŒ‚ˆ—‚Ì“r’†‚Å‚â‚ç‚ê‚½—p
+        //ï¿½Uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì“rï¿½ï¿½ï¿½Å‚ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½p
         isAttack = false;
 
     }
